@@ -35,6 +35,26 @@ export const getAllProducts = async (req, res) => {
     })
 }
 
+// Get Single Product
+export const getSingleProduct = async (req, res, next) => {
+    const {id} = req.params;
+
+    const product = await Product.findById(id);
+
+    if (!product) {
+        return res.status(500).json({
+            success: false,
+            message: "Product not found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Product Fetched Successfully",
+        product
+    })
+}
+
 // update product
 export const updateProduct = async (req, res, next) => {
     const {id} = req.params;   // log id
@@ -59,5 +79,24 @@ export const updateProduct = async (req, res, next) => {
         success: true,
         message: "Product Updated Successfully",
         product
+    })
+}
+
+// Delete Product
+export const deleteProduct = async (req, res, next) => {
+    const { id } = req.params;
+
+    const product = await Product.findByIdAndDelete(id);
+
+    if (!product) {
+        return res.status(500).json({
+            success: false,
+            message: "Product not found"
+        })
+    }
+
+    res.status(200).json({
+        success: true,
+        message: "Product Deleted Successfully"
     })
 }
