@@ -1,6 +1,7 @@
 import Product from '../models/productModel.js';
 import ErrorHandler from '../utils/errorHandler.js';
 import { catchAsyncFunction } from '../middleware/catchAsyncError.js';
+import ApiFeatures from '../utils/apifeatures.js';
 
 
 // Create Product - admin (req(fetch data) -> Process on Data -> Return output)
@@ -30,7 +31,8 @@ export const createProduct = async (req, res, next) => {
 // Get all Products
 export const getAllProducts = async (req, res) => {
     try {
-        const products = await Product.find();
+        const apiFeature = new ApiFeatures(Product.find(), req.query).search();
+        const products = await apiFeature.query;
         
         res.status(200).json({
             success: true,
